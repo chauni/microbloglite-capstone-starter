@@ -5,9 +5,9 @@ Don't forget to read the [*MicroblogLite* API docs](https://microbloglite.heroku
 Practice and experimentation provide experience, and experience provides confidence.
 
 ## Collaborators
-Chauni Brown (https://github.com/chauni)
-Ariel Kelbore (https://github.com/Kelbore)
-Alejandro R. (https://github.com/MrCodeA007)
+- Chauni Brown (https://github.com/chauni)
+- Ariel Kelbore (https://github.com/Kelbore)
+- Alejandro R. (https://github.com/MrCodeA007)
 
 # Microblog Site Capstone 3
 
