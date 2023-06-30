@@ -92,7 +92,7 @@ postBtnEl.addEventListener(`click`, (e) => {
       console.log(posts);
     });
   getPosts();
-  window.location.assign(`profile.html`);
+  // window.location.assign(`profile.html`);
 });
 //----------------------------------------------------------------------------------
 
