@@ -3,12 +3,64 @@ const createPostInputEl = document.getElementById(`createPostInput`);
 const logoutBtn = document.getElementById("logoutBtn");
 const displayPostsDivEl = document.getElementById(`DisplayPostsDivs`);
 const postDisplayEl = document.getElementById(`postDisplay`);
-const userAccount = document.getElementById('userAccount');
-const userInfo = document.getElementById('userInfo');
-const usernamePosts = document.getElementById('usernamePosts')
-const editBio = document.getElementById('editBio')
-
+const userAccount = document.getElementById("userAccount");
+const userInfo = document.getElementById("userInfo");
+const usernamePosts = document.getElementById("usernamePosts");
+const editBtn = document.getElementById("editBtn");
+const userBio = document.getElementById(`userBio`);
 const loginData = getLoginData();
+const bioDiv = document.querySelector(`.bioDiv`);
+const doneBtn = document.getElementById(`doneBtn`);
+const bioText = document.getElementById(`bioText`);
+
+fetch(`https://microbloglite.herokuapp.com/api/users/${loginData.username}`,{
+      method: `GET`,
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        Authorization: `Bearer ${loginData.token}`,
+      }
+    }).then((response) => response.json()) .then(bio =>{
+      userBio.innerHTML = bio.bio
+    })
+
+editBtn.addEventListener("click", () => {
+  userBio.style.display = `none`;
+  editBtn.style.display = `none`;
+  bioDiv.style.display = `block`;
+  bioText.style.display = `flex`;
+  doneBtn.style.display = `flex`;
+
+  doneBtn.addEventListener("click", () => {
+    fetch(
+      `https://microbloglite.herokuapp.com/api/users/${loginData.username}`,
+      {
+        method: `PUT`,
+        body: JSON.stringify({
+          bio: bioText.value,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          Authorization: `Bearer ${loginData.token}`,
+        },
+      }
+    );
+    userBio.style.display = `flex`;
+    editBtn.style.display = `flex`;
+    bioDiv.style.display = `none`;
+    bioText.style.display = `none`;
+    doneBtn.style.display = `none`;
+
+    fetch(`https://microbloglite.herokuapp.com/api/users/${loginData.username}`,{
+      method: `GET`,
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        Authorization: `Bearer ${loginData.token}`,
+      }
+    }).then((response) => response.json()) .then(bio =>{
+      userBio.innerHTML = bio.bio
+    })
+  });
+});
 
 editBio.addEventListener('click', () => {
   
@@ -43,8 +95,8 @@ postBtnEl.addEventListener(`click`, (e) => {
     .then((posts) => {
       console.log(posts);
     });
-  // getPosts();
-  window.location.reload();
+  getPosts();
+  window.location.assign(`profile.html`);
 });
 //----------------------------------------------------------------------------------
 
@@ -59,19 +111,19 @@ function getPosts() {
   fetch(userNameUrl, options)
     .then((response) => response.json())
     .then((data) => {
+      userAccount.innerHTML = loginData.username;
 
-      userAccount.innerHTML = loginData.username
+      userInfo.innerHTML = `${loginData.username}'s Profile`;
 
-      userInfo.innerHTML = `${loginData.username}'s Profile`
+      usernamePosts.innerHTML = `${loginData.username}'s Posts`;
 
       usernamePosts.innerHTML = `${loginData.username}'s Posts`
 
       let template;
-      
+
       template = document.getElementById("postDisplay");
 
       data.forEach((post) => {
-
         if ("content" in document.createElement("template")) {
           const postEl = template.content.cloneNode(true);
 
@@ -82,21 +134,21 @@ function getPosts() {
           postText.textContent = post.text;
 
           const timeStamp = postEl.querySelector("small");
-          timeStamp.textContent = (new Date(post.createdAt).toLocaleString());
+          timeStamp.textContent = new Date(post.createdAt).toLocaleString();
 
           const trashBtnEl = postEl.getElementById(`trashBtn`);
 
-          const deleteBtnEl = postEl.getElementById('deleteBtn')
+          const deleteBtnEl = postEl.getElementById("deleteBtn");
 
           deleteBtnEl.addEventListener("click", () => {
 
             console.log('post deleted?')
             fetch(`https://microbloglite.herokuapp.com/api/posts/${post._id}`, {
-              method: 'DELETE',
+              method: "DELETE",
 
               headers: {
                 Authorization: `Bearer ${loginData.token}`,
-                "Content-type": "application/json; charset=utf-8"
+                "Content-type": "application/json; charset=utf-8",
               },
             });
             window.location.reload();
@@ -105,7 +157,6 @@ function getPosts() {
           const likeBtn = postEl.querySelector("a");
 
           likeBtn.addEventListener("click", (e) => {
-
             e.preventDefault();
 
             console.log(post._id);
