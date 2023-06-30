@@ -14,9 +14,9 @@ Alejandro R. (https://github.com/MrCodeA007)
 # Sign Up/Login
 - The register/sign up form allows the user to create an account on this microblogging site, Chatter. Once an account is created, the user is redirected to the login page.
 
-- Once at the login page, the user is able to input their username and password and is then redirected to the Posts/Timeline page.
-
 ![Image of register page](global-images/microblog-chatter-register-page.png)
+
+- Once at the login page, the user is able to input their username and password and is then redirected to the Posts/Timeline page.
 
 ![Image of login page](global-images/microblog-chatter-login-page.png)
 
